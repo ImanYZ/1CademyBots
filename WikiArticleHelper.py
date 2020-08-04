@@ -136,19 +136,32 @@ def GetPages(soup):
     return pages
 
 #Gets all pages in a Category 
-def GetPagesFromCategory(category, recursive=False, max_depth=1):
-
+def GetPagesFromCategory(category, recursive=False, max_depth=1, current_depth=0, pages=[], blacklist=[]):
     url = 'https://en.wikipedia.org/wiki/Category:' + category
     soup = WikipediaScrapingLibrary.soupStructure(url)
 
-    print(GetPages(soup))
-    #print(GetCategories(soup))
+    if not recursive:
+        return GetPages(soup)
+
+    if current_depth < max_depth:
+        pages.extend(GetPages(soup))
+        blacklist.append(category)
+        categories = GetCategories(soup)
+        for category in categories:
+            category = category[category.rfind('/') + 1:]
+            if not category in blacklist:
+                GetPagesFromCategory(category, recursive=recursive, max_depth=max_depth, current_depth=current_depth+1, pages=pages, blacklist=blacklist)
+
+    return pages
+
+    
+
 
 #This is just to test this module on a variety of wiki articles to ensure that 
 #it works in 99% of cases
 if __name__ == '__main__':
     print("Hello")
-    GetPagesFromCategory("Epidemiology", False)
+    print(GetPagesFromCategory("Epidemiology", True))
     #print(GetReferenceDataFromArticle('https://en.wikipedia.org/wiki/Ford_Motor_Company'))
     #print(len(getSummaryParagraphs(WikipediaScrapingLibrary.soupStructure('https://en.wikipedia.org/wiki/Ford_Motor_Company'))) == 3)
     #print(len(getSummaryParagraphs(WikipediaScrapingLibrary.soupStructure('https://google.com'))) == 0)
