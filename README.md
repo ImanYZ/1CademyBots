@@ -6,15 +6,20 @@ pull it to your local computer using git pull https://github.com/yourname/1Cadem
 
 Create a python virtual environment in the same folder that git created called 1CademyBots
 
-if you get an error creating a virtual environment, make sure that your installed python version
-is greater than 3.7.X by running python -V
 
+```
 cd 1CademyBots
 python -m venv env
 emv\scripts\activate
 pip install -r requirements.txt
-
+```
 This will install all necessary packages to run the bot
+
+If you get an error creating a virtual environment, make sure that your installed python version
+is greater than 3.7.X by running 
+```
+python -V
+```
 
 The other necessary file is MicrosoftAcademicAPIKey.py which must be created
 and contain API_KEY = "YOUR_KEY" in order to connect to the Microsoft Research API
