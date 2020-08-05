@@ -5,9 +5,7 @@ import csv
 import datetime
 import time
 # import unicodedata
-
 from bs4 import SoupStrainer, BeautifulSoup
-
 from WebsiteScapingLibrary import scrapeWebsite, strip_tags, soupStructure
 
 import requests
@@ -712,6 +710,6 @@ def IsWikipageAppropriate(title, hyperlink):
         print("The Wikipedia page is OK to recommend.")
         return True, resultRow
 
-
-print(IsWikipageAppropriate("Epidemiology of attention deficit hyperactive disorder",
-                            "https://en.wikipedia.org/wiki/Epidemiology_of_attention_deficit_hyperactive_disorder"))
+if __name__ == '__main__':
+    print(IsWikipageAppropriate("Epidemiology of attention deficit hyperactive disorder",
+                                "https://en.wikipedia.org/wiki/Epidemiology_of_attention_deficit_hyperactive_disorder"))

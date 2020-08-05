@@ -58,14 +58,10 @@ def GoogleSearchAPIResults(searchTerm, numberOfPages):
     while not 'items' in response:
         print("Search URL: " + response.url)
         print("Cannot find items in the search results. Enter a new search query:")
-<<<<<<< HEAD
-        searchURL = input()
-        searchURL = "https://www.googleapis.com/customsearch/v1/siterestrict"
-=======
+
         searchTerm = input()
         searchURL = "https://www.googleapis.com/customsearch/v1/siterestrict?cx=" + \
             SearchEngineID + "&key=" + CustomSearchAPIKey + "&q=" + searchTerm
->>>>>>> 46fd4789a98424a0c3370202fa2eab27ce0bfd67
         if searchURL == "1":
             return []
         try:
@@ -85,8 +81,7 @@ def GoogleSearchAPIResults(searchTerm, numberOfPages):
     return results
 
 
-<<<<<<< HEAD
-=======
+
 def IsWikipageAppropriate(title, hyperlink):
 
     if ("Category:" in title or "User:" in title or "Talk:" in title or "User talk:" in title or
@@ -171,8 +166,6 @@ def IsWikipageAppropriate(title, hyperlink):
 def BuildArticleStructure(url):
     pass
 
-
->>>>>>> 46fd4789a98424a0c3370202fa2eab27ce0bfd67
 # datatsetFileName = input(
 #     "Enter the name of the dataset csv file without any sufix:")
 # while len(datatsetFileName) <= 1:
