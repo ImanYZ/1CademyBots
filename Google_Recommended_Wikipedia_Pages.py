@@ -59,9 +59,6 @@ def GoogleSearchAPIResults(searchTerm, numberOfPages):
         print("Search URL: " + response.url)
         print("Cannot find items in the search results. Enter a new search query:")
 
-        searchURL = input()
-        searchURL = "https://www.googleapis.com/customsearch/v1/siterestrict"
-
         searchTerm = input()
         searchURL = "https://www.googleapis.com/customsearch/v1/siterestrict?cx=" + \
             SearchEngineID + "&key=" + CustomSearchAPIKey + "&q=" + searchTerm
