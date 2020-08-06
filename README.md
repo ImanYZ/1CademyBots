@@ -23,6 +23,7 @@ python -V
 
 The other necessary file is MicrosoftAcademicAPIKey.py which must be created
 and contain API_KEY = "YOUR_KEY" in order to connect to the Microsoft Research API
+You can sign up for the api and get your private key here https://msr-apis.portal.azure-api.net
 
 This .gitignore is cofigured for a Visual Studio environment so before creating any pull 
 requests, please add any files created by your IDE to your local .gitignore so they are not
