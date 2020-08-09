@@ -4,13 +4,13 @@ import unittest
 import re
 import requests
 
-#TODO implement caching one article for successive calls to 
+#TODO implement caching one article for successive calls to
 #getReferenceData and getPrerequisiteData
 #
 cache_url = None
 cache = None
 
-#Returns a list of summary paragraphs as bs4 tags 
+#Returns a list of summary paragraphs as bs4 tags
 #
 #accepts: bs4 object for the article
 #
@@ -22,7 +22,7 @@ def getSummaryParagraphs(articleSoup):
         return found
 
     for child in list(summary_container)[0].children:
-        
+
         if isinstance(child, element.Tag):
 
             #Some articles have a <p> tag that only serves to hold coordinates
@@ -41,7 +41,7 @@ def getSummaryParagraphs(articleSoup):
             #until we get to a different tag
             elif len(found) > 0:
                 return found
-            
+
 
     #We should have returned our list already, so if we get this far
     #something is probably wrong with the structure of our soup article
@@ -49,25 +49,25 @@ def getSummaryParagraphs(articleSoup):
 
 
 ##
-#Returns a list of prerequisite article urls as strings 
+#Returns a list of prerequisite article urls as strings
 #
 #
 #Accepts url as string
 ##
-def getPrerequisiteDataFromArticle(url):
+def GetPrerequisiteDataFromArticle(url):
     print("Getting summary from article: ", url)
 
     soup = WikipediaScrapingLibrary.soupStructure(url)
-    
+
     prerequisites = []
-    
+
     summary_paragraphs = getSummaryParagraphs(soup)
 
     for paragraph in summary_paragraphs:
         for link in paragraph.find_all('a'):
             if link.has_attr('href') and '#cite_note' not in link['href']:
                 prerequisites.append('https://en.wikipedia.org' + link['href'])
-    
+
     if len(prerequisites) == 0:
         print("Found no prerequisites, flagging article as abnormality: ", url)#TODO implement logging
 
@@ -85,10 +85,10 @@ def GetReferenceDataFromArticle(url):
     #The wiki html structure does not explicitly define the summary paragraphs so we
     #have to find the <p> tags which are direct descendents of the <div> below id#mw-content-text
     summary_paragraphs = getSummaryParagraphs(soup)
-    
+
     ExtractedReferences = []
     ref_section = soup.find('ol', {'class':"references"})
-    
+
     if not ref_section:
         print("Trouble finding reference section, flagging")#TODO implement logging
         return []
@@ -99,12 +99,12 @@ def GetReferenceDataFromArticle(url):
         #TODO Do we want to take into account summary references which are marked as 'wiki/Wikipedia:Citation_needed'?
         for link in paragraph.find_all('a', {'href': re.compile(r'#cite_note.+')}):
             ref = ref_section.find(id=link['href'][1:])
-            
+
             try:
                 found.append((ref.find('a', {'class': re.compile(r'external')})['href'], ref.find('cite').text))
             except Exception as e:
                 print("Error getting citation information from: ", url)#TODO Implement Logging
-            
+
     return found
 
 def GetCategories(soup):
@@ -127,7 +127,7 @@ def GetPages(soup):
             else:
                 print("No href", link.text)
         link = page_container.find("a", title=re.compile(r'Category'))
-        
+
         if 'next page' in link.text:
             page_container = WikipediaScrapingLibrary.soupStructure('https://en.wikipedia.org' + link['href']).find(id="mw-pages")
         else:
@@ -135,7 +135,7 @@ def GetPages(soup):
 
     return pages
 
-#Gets all pages in a Category 
+#Gets all pages in a Category
 def GetPagesFromCategory(category, recursive=False, max_depth=1, current_depth=0, pages=[], blacklist=[]):
     url = 'https://en.wikipedia.org/wiki/Category:' + category
     soup = WikipediaScrapingLibrary.soupStructure(url)
@@ -154,10 +154,10 @@ def GetPagesFromCategory(category, recursive=False, max_depth=1, current_depth=0
 
     return pages
 
-    
 
 
-#This is just to test this module on a variety of wiki articles to ensure that 
+
+#This is just to test this module on a variety of wiki articles to ensure that
 #it works in 99% of cases
 if __name__ == '__main__':
     print("Hello")
