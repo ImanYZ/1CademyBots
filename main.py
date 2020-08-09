@@ -40,6 +40,11 @@ def append_appropriate(to_list, page_title):
         to_list.append(page_title)
     print(to_list)
 
+def add_pre_req_info_to_article(dictionary, page_title):
+    """Adding pre-req information to a wikipedia article."""
+    page_url = wiki_url(page_title)
+    dictionary[page_title] = WikiArticleHelper.GetPrerequisiteDataFromArticle(page_url)
+
 def GetPotentialPages():
     """Loop through the list of pages from GetPagesFromCategory.
 
@@ -49,15 +54,14 @@ def GetPotentialPages():
     retrieved using WikiArticleHelper.GetPrerequisitesFromArticle
     """
     pages_from_category = WikiArticleHelper.GetPagesFromCategory("Epidemiology", True)
-    potential_pages = []
+    appropriate_pages = []
     pre_req_dict = {}
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        executor.map(partial(append_appropriate, potential_pages), pages_from_category)
-    print(potential_pages)
-    for page_title in potential_pages:
-        page_url = wiki_url(page_title)
-        pre_req_dict[page_title] = WikiArticleHelper.GetPrerequisiteDataFromArticle(page_url)
-
+        executor.map(partial(append_appropriate, appropriate_pages), pages_from_category)
+    print(appropriate_pages)
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        executor.map(partial(add_pre_req_info_to_article, pre_req_dict), appropriate_pages)
+    print(pre_req_dict)
     return pre_req_dict
 
 
