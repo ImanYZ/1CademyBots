@@ -2,7 +2,11 @@
 
 # Setting up the environment
 The first step is to fork this repo into your own and then 
-pull it to your local computer using git pull https://github.com/yourname/1CademyBots
+pull it to your local computer 
+
+```
+git clone https://github.com/yourname/1CademyBots
+```
 
 Create a python virtual environment in the same folder that git created called 1CademyBots
 
@@ -13,15 +17,17 @@ python -m venv env
 emv\scripts\activate
 pip install -r requirements.txt
 ```
+
 This will install all necessary packages to run the bot
 
 If you get an error creating a virtual environment, make sure that your installed python version
 is greater than 3.7.X by running 
+
 ```
 python -V
 ```
 
-The other necessary file is MicrosoftAcademicAPIKey.py which must be created
+The other necessary file is MicrosoftAcademicAPIKey.py which must be created by hand
 and contain API_KEY = "YOUR_KEY" in order to connect to the Microsoft Research API
 You can sign up for the api and get your private key here https://msr-apis.portal.azure-api.net
 
