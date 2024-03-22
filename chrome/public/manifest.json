@@ -1,0 +1,113 @@
+{
+  "author": "1CademyBot",
+  "action": {
+    "default_icon": {
+      "19": "images/icon.png",
+      "38": "images/icon-2x.png"
+    },
+    "default_title": "1CademyBot"
+  },
+  "description": "This extension simplifies using OpenAI ChatGPT for researchers, instructors, and students.",
+  "icons": {
+    "128": "images/icon-8x.png",
+    "16": "images/icon.png",
+    "32": "images/icon-2x.png",
+    "48": "images/icon-3x.png"
+  },
+  "manifest_version": 3,
+  "minimum_chrome_version": "88.0",
+  "name": "1CademyBot",
+  "omnibox": {
+    "keyword": "1CademyBot"
+  },
+  "host_permissions": ["https://core-econ.org/the-economy/microeconomics/*"],
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "contextMenus",
+    "scripting",
+    "windows",
+    "storage",
+    "commands"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["paste-detector.js"]
+    },
+    {
+      "matches": ["https://core-econ.org/the-economy/microeconomics/*"],
+      "run_at": "document_end",
+      "exclude_matches": [
+        "https://core-econ.org/the-economy/microeconomics/*",
+        "https://www.core-econ.org/the-economy/microeconomics/*",
+        "https://wordpress.deeplearning.ai/wp-content/uploads/2022/03/andrew-ng-machine-learning-yearning.pdf",
+        "http://localhost:3000/notebook*",
+        "https://1cademy.com/notebook*",
+        "https://1cademy.com/book/*",
+        "http://localhost:3000/book/*"
+      ],
+      "js": ["app.js"],
+      "all_frames": true
+    }
+  ],
+  "externally_connectable": {
+    "matches": ["http://*/*", "https://*/*"]
+  },
+  "short_name": "1CoAuthor",
+  "update_url": "https://clients2.google.com/service/update2/crx",
+  "version": "1.0.0",
+  "version_name": "1.0.0",
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "rive-assistant/loader/*.riv",
+        "rive-assistant/assistant-0.riv",
+        "rive-assistant/idle.riv",
+        "rive-assistant/notification.riv",
+        "rive-voice-assistant/*.riv",
+        "paste-detector.js",
+        "images/icon-2x.png",
+        "images/icon-3x.png",
+        "images/icon-8x.png",
+        "images/icon.png",
+        "images/icon.svg",
+        "images/steric.png",
+        "images/mark.png",
+        "images/question.png",
+        "images/exclamation.png",
+        "images/Logo.svg",
+        "images/1cademy-assistant.svg",
+        "images/Honor-Education_2Line_white.png",
+        "gif/*"
+      ],
+      "matches": ["http://*/*", "https://*/*"]
+    }
+  ],
+  "commands": {
+    "oa-paraphrase-cgpt": {
+      "suggested_key": {
+        "default": "Alt+Shift+E"
+      },
+      "description": "Paraphrase using ChatGPT"
+    },
+    "oa-improve-cgpt": {
+      "suggested_key": {
+        "default": "Alt+Shift+O"
+      },
+      "description": "Improve using ChatGPT"
+    },
+    "oa-shorten-cgpt": {
+      "suggested_key": {
+        "default": "Alt+Shift+Q"
+      },
+      "description": "Shorten using ChatGPT"
+    },
+    "oa-mcq-cgpt": {
+      "suggested_key": {
+        "default": "Alt+Shift+W"
+      },
+      "description": "Generate MCQ using ChatGPT"
+    }
+  }
+}
