@@ -20,7 +20,9 @@
   "omnibox": {
     "keyword": "1CademyBot"
   },
-  "host_permissions": ["https://core-econ.org/the-economy/microeconomics/*"],
+  "host_permissions": [
+    "https://core-econ.org/the-economy/microeconomics/*"
+  ],
   "permissions": [
     "tabs",
     "activeTab",
@@ -32,27 +34,30 @@
   ],
   "content_scripts": [
     {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["paste-detector.js"]
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ],
+      "js": [
+        "paste-detector.js"
+      ]
     },
     {
-      "matches": ["https://core-econ.org/the-economy/microeconomics/*"],
-      "run_at": "document_end",
-      "exclude_matches": [
-        "https://core-econ.org/the-economy/microeconomics/*",
-        "https://www.core-econ.org/the-economy/microeconomics/*",
-        "https://wordpress.deeplearning.ai/wp-content/uploads/2022/03/andrew-ng-machine-learning-yearning.pdf",
-        "http://localhost:3000/notebook*",
-        "https://1cademy.com/notebook*",
-        "https://1cademy.com/book/*",
-        "http://localhost:3000/book/*"
+      "matches": [
+        "https://*/*"
       ],
-      "js": ["app.js"],
+      "run_at": "document_end",
+      "js": [
+        "app.js"
+      ],
       "all_frames": true
     }
   ],
   "externally_connectable": {
-    "matches": ["http://*/*", "https://*/*"]
+    "matches": [
+      "http://*/*",
+      "https://*/*"
+    ]
   },
   "short_name": "1CoAuthor",
   "update_url": "https://clients2.google.com/service/update2/crx",
@@ -81,7 +86,10 @@
         "images/Honor-Education_2Line_white.png",
         "gif/*"
       ],
-      "matches": ["http://*/*", "https://*/*"]
+      "matches": [
+        "http://*/*",
+        "https://*/*"
+      ]
     }
   ],
   "commands": {
