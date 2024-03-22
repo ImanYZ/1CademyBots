@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "jsx": "react",
+    "module": "ESNext",
+    "target": "ES6",
+    "moduleResolution": "Node",
+    "lib": ["DOM", "ESNext"],
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "rootDir": "src",
+    "outDir": "dist/js",
+    "noEmitOnError": true,
+    "typeRoots": ["node_modules/@types"],
+    "resolveJsonModule": true
+  },
+  "exclude": ["node_modules", "functions", "dist"]
+}

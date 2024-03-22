@@ -1,0 +1,8 @@
+dist
+node_modules
+.env*
+.webpack_cache
+.DS_Store
+dist.zip
+firebaseConfig.js
+openaiConfig.js
