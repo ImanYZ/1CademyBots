@@ -59,7 +59,7 @@
     "formik": "^2.4.3",
     "gapi-client": "^0.0.3",
     "googleapis": "^133.0.0",
-    "katex": "^0.16.7",
+    "katex": "^0.16.10",
     "moment": "^2.29.4",
     "openai": "^4.27.0",
     "react": "^18.2.0",
