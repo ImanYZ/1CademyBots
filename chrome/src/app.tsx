@@ -1,6 +1,7 @@
 import React from 'react'
 import { createRoot } from 'react-dom/client'
 import Main from './Main'
+import "./styles.css"
 
 let container = document.getElementById('1coauthor')
 if (!container) {

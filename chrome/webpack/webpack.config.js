@@ -8,7 +8,7 @@ const TerserPlugin = require('terser-webpack-plugin')
 module.exports = {
   mode: 'production',
   entry: {
-    // background: path.resolve(__dirname, '..', 'src', 'utils', 'background.ts'),
+    background: path.resolve(__dirname, '..', 'src', 'background.ts'),
     'paste-detector': path.resolve(
       __dirname,
       '..',
