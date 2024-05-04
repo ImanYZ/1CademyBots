@@ -8,18 +8,16 @@ import {
   where,
 } from 'firebase/firestore'
 import { initFirebaseClientSDK } from './utils/firestoreClient.config'
-initFirebaseClientSDK();
+initFirebaseClientSDK()
 
-interface ParagraphProp {
+interface Paragraph {
+  id: string
   hash: string
   content: string
 }
-interface Paragraph {
-  [key: string]: ParagraphProp
-}
 const Main = () => {
   const db = getFirestore()
-  const [paragraphs, setParagraphs] = useState<Paragraph>({})
+  const [paragraphs, setParagraphs] = useState<Paragraph[]>([])
   const [selectedParagraphId, setSelectedParagraphId] = useState<string | null>(
     null
   )
@@ -28,20 +26,46 @@ const Main = () => {
       const url = getURL()
       const q = query(collection(db, 'chaptersBook'), where('url', '==', url))
       const docs = await getDocs(q)
-      console.log(docs.docs[0], "docs.docs[0]--docs.docs[0]")
-      const paragraphs = document.querySelectorAll('[id^=eb]')
-      const allParagraphs: Paragraph = {}
+      const chapterParagraphs = docs.docs[0].data()?.paragraphs
+      const paragraphs = document.querySelectorAll(`*`)
+      const allParagraphs: Paragraph[] = []
+      let videoId = 1
       paragraphs.forEach((paragraph, index) => {
-        const hash: any = generateHash(paragraph.textContent || '')
-        allParagraphs[paragraph.id] = {
-          hash,
-          content: paragraph.textContent || '',
+        if (paragraph.id.startsWith('figure-')) {
+          const chapterParagraph = chapterParagraphs.find((cParagraph: any) =>
+            cParagraph.ids.includes(paragraph.id)
+          )
+          const text = chapterParagraph.text
+          const hash: any = generateHash(text || '')
+          allParagraphs.push({ id: paragraph.id, hash, content: text || '' })
+        } else if (paragraph.id.startsWith('eb')) {
+          const hash: any = generateHash(paragraph.textContent || '')
+          allParagraphs.push({
+            id: paragraph.id,
+            hash,
+            content: paragraph.textContent || '',
+          })
+        } else if (paragraph.getAttribute('data-video-id')) {
+          const chapterParagraph = chapterParagraphs.find((cParagraph: any) =>
+            cParagraph.ids.includes('youtube-core-econ-' + videoId)
+          )
+          const id = paragraph.getAttribute('data-video-id')
+          const hash: any = generateHash(chapterParagraph.text || '')
+          allParagraphs.push({
+            id: id || '',
+            hash,
+            content: chapterParagraph.text || '',
+          })
         }
       })
       setParagraphs(allParagraphs)
       document.body.addEventListener('mouseover', (event: any) => {
         const target = event.target
-        if (target?.id?.includes('eb-')) {
+        if (
+          target?.id?.includes('eb-') ||
+          target?.id?.includes('figure-') ||
+          target.getAttribute('data-video-id')
+        ) {
           const hashIcon = document.querySelector(
             '#onecademy-icon'
           ) as HTMLElement
@@ -50,9 +74,13 @@ const Main = () => {
             hashIcon.style.display = 'block'
             hashIcon.style.position = 'absolute'
             hashIcon.style.top = `${rect.top + window.scrollY + 5}px`
-            hashIcon.style.left = `${rect.left - 30}px`
+            hashIcon.style.left = `${rect.left - 50}px`
           }
-          setSelectedParagraphId(target?.id)
+          if (target.getAttribute('data-video-id')) {
+            setSelectedParagraphId(target.getAttribute('data-video-id'))
+          } else {
+            setSelectedParagraphId(target?.id)
+          }
         }
       })
     })()
@@ -60,6 +88,7 @@ const Main = () => {
 
   const handleClick = async () => {
     const data = extractObjectUpToKey(paragraphs, selectedParagraphId || '')
+    console.log(Array.from(data), 'data00data')
     chrome.runtime.sendMessage({
       action: 'createNewTab',
       url: 'https://1cademy.com/notebook',

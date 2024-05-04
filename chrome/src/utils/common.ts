@@ -1,20 +1,17 @@
-interface ParagraphProp {
+interface Paragraph {
+  id: string
   hash: string
   content: string
 }
-interface Paragraph {
-  [key: string]: ParagraphProp
-}
-
-export const extractObjectUpToKey = (obj: Paragraph, key: string) => {
-  const extractedObject = {} as Paragraph
-  for (const objKey in obj) {
-    extractedObject[objKey] = obj[objKey]
-    if (objKey === key) {
+export const extractObjectUpToKey = (obj: Paragraph[], key: string) => {
+  const extractedObject: Paragraph[] = []
+  for (const objValue of obj) {
+    extractedObject.push(objValue)
+    if (objValue.id === key) {
       break
     }
   }
-  return extractedObject
+  return extractedObject.slice(-3)
 }
 
 export const getURL = () => {
