@@ -55,7 +55,7 @@
     "approx-string-match": "^2.0.0",
     "d3": "^7.8.5",
     "dotenv-webpack": "^8.0.1",
-    "firebase": "^9.15.0",
+    "firebase": "^10.12.2",
     "formik": "^2.4.3",
     "gapi-client": "^0.0.3",
     "googleapis": "^133.0.0",
