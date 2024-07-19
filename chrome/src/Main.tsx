@@ -69,6 +69,7 @@ const Main = () => {
   useEffect(() => {
     document.body.addEventListener('mouseover', (event: any) => {
       const target = event.target
+      if(target?.id === "onecademy-icon") return;
       if (!!target?.id || target.getAttribute('data-video-id')) {
         const hashIcon = document.querySelector(
           '#onecademy-icon'
@@ -90,7 +91,6 @@ const Main = () => {
       }
     })
   }, [])
-  console.log('selectedParagraphId', selectedParagraphId)
   const handleClick = async () => {
     const data = extractObjectUpToKey(paragraphs, selectedParagraphId || '')
     console.log(Array.from(data), 'data00data')
