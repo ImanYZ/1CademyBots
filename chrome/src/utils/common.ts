@@ -16,6 +16,7 @@ export const extractObjectUpToKey = (obj: Paragraph[], key: string) => {
 
 export const getURL = () => {
   let url = new URL(window.location.href)
+  return url.href
   let currentUrl = url.pathname.split('/').pop() || ''
   return currentUrl
 }

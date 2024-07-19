@@ -21,71 +21,76 @@ const Main = () => {
   const [selectedParagraphId, setSelectedParagraphId] = useState<string | null>(
     null
   )
+
+  const loadPreviousChapterParagraphs = async () => {
+    const url = getURL()
+    console.log('url==>', url)
+    const q = query(collection(db, 'chaptersBook'), where('url', '==', url))
+    const docs = await getDocs(q)
+    const chapterParagraphs = docs.docs[0].data()?.paragraphs
+    const paragraphs = document.querySelectorAll(`*`)
+    const allParagraphs: Paragraph[] = []
+    let videoId = 1
+    console.log('paragraphs', paragraphs)
+    paragraphs.forEach((paragraph, index) => {
+      if (paragraph.id.startsWith('figure-')) {
+        const chapterParagraph = chapterParagraphs.find((cParagraph: any) =>
+          cParagraph.ids.includes(paragraph.id)
+        )
+        const text = chapterParagraph?.text || ''
+        const hash: any = generateHash(text || '')
+        allParagraphs.push({ id: paragraph.id, hash, content: text || '' })
+      } else if (paragraph.id.startsWith('eb')) {
+        const hash: any = generateHash(paragraph.textContent || '')
+        allParagraphs.push({
+          id: paragraph.id,
+          hash,
+          content: paragraph.textContent || '',
+        })
+      } else if (paragraph.getAttribute('data-video-id')) {
+        const chapterParagraph = chapterParagraphs.find((cParagraph: any) =>
+          cParagraph.ids.includes('youtube-core-econ-' + videoId)
+        )
+        const id = paragraph.getAttribute('data-video-id')
+        const hash: any = generateHash(chapterParagraph.text || '')
+        allParagraphs.push({
+          id: id || '',
+          hash,
+          content: chapterParagraph.text || '',
+        })
+      }
+    })
+    setParagraphs(allParagraphs)
+  }
+
   useEffect(() => {
-    ;(async () => {
-      const url = getURL()
-      const q = query(collection(db, 'chaptersBook'), where('url', '==', url))
-      const docs = await getDocs(q)
-      const chapterParagraphs = docs.docs[0].data()?.paragraphs
-      const paragraphs = document.querySelectorAll(`*`)
-      const allParagraphs: Paragraph[] = []
-      let videoId = 1
-      paragraphs.forEach((paragraph, index) => {
-        if (paragraph.id.startsWith('figure-')) {
-          const chapterParagraph = chapterParagraphs.find((cParagraph: any) =>
-            cParagraph.ids.includes(paragraph.id)
-          )
-          const text = chapterParagraph.text
-          const hash: any = generateHash(text || '')
-          allParagraphs.push({ id: paragraph.id, hash, content: text || '' })
-        } else if (paragraph.id.startsWith('eb')) {
-          const hash: any = generateHash(paragraph.textContent || '')
-          allParagraphs.push({
-            id: paragraph.id,
-            hash,
-            content: paragraph.textContent || '',
-          })
-        } else if (paragraph.getAttribute('data-video-id')) {
-          const chapterParagraph = chapterParagraphs.find((cParagraph: any) =>
-            cParagraph.ids.includes('youtube-core-econ-' + videoId)
-          )
-          const id = paragraph.getAttribute('data-video-id')
-          const hash: any = generateHash(chapterParagraph.text || '')
-          allParagraphs.push({
-            id: id || '',
-            hash,
-            content: chapterParagraph.text || '',
-          })
+    loadPreviousChapterParagraphs()
+  }, [])
+  useEffect(() => {
+    document.body.addEventListener('mouseover', (event: any) => {
+      const target = event.target
+      if (!!target?.id || target.getAttribute('data-video-id')) {
+        const hashIcon = document.querySelector(
+          '#onecademy-icon'
+        ) as HTMLElement
+        const rect = target?.getBoundingClientRect()
+        if (hashIcon) {
+          hashIcon.style.display = 'block'
+          hashIcon.style.position = 'absolute'
+          hashIcon.style.top = `${rect.top + window.scrollY + 5}px`
+          hashIcon.style.left = `${rect.left - 30}px`
         }
-      })
-      setParagraphs(allParagraphs)
-      document.body.addEventListener('mouseover', (event: any) => {
-        const target = event.target
-        if (
-          target?.id?.includes('eb-') ||
-          target?.id?.includes('figure-') ||
-          target.getAttribute('data-video-id')
-        ) {
-          const hashIcon = document.querySelector(
-            '#onecademy-icon'
-          ) as HTMLElement
-          const rect = target?.getBoundingClientRect()
-          if (hashIcon) {
-            hashIcon.style.display = 'block'
-            hashIcon.style.position = 'absolute'
-            hashIcon.style.top = `${rect.top + window.scrollY + 5}px`
-            hashIcon.style.left = `${rect.left - 50}px`
-          }
-          if (target.getAttribute('data-video-id')) {
-            setSelectedParagraphId(target.getAttribute('data-video-id'))
-          } else {
+        if (target.getAttribute('data-video-id')) {
+          setSelectedParagraphId(target.getAttribute('data-video-id'))
+        } else {
+          if (!target?.id) {
             setSelectedParagraphId(target?.id)
           }
         }
-      })
-    })()
+      }
+    })
   }, [])
-
+  console.log('selectedParagraphId', selectedParagraphId)
   const handleClick = async () => {
     const data = extractObjectUpToKey(paragraphs, selectedParagraphId || '')
     console.log(Array.from(data), 'data00data')
