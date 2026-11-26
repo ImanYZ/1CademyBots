@@ -70,25 +70,15 @@
   "web_accessible_resources": [
     {
       "resources": [
-        "rive-assistant/loader/*.riv",
-        "rive-assistant/assistant-0.riv",
-        "rive-assistant/idle.riv",
-        "rive-assistant/notification.riv",
-        "rive-voice-assistant/*.riv",
         "paste-detector.js",
         "images/icon-2x.png",
         "images/icon-3x.png",
         "images/icon-8x.png",
         "images/icon.png",
         "images/icon.svg",
-        "images/steric.png",
-        "images/mark.png",
-        "images/question.png",
-        "images/exclamation.png",
         "images/Logo.svg",
         "images/1cademy-assistant.svg",
-        "images/Honor-Education_2Line_white.png",
-        "gif/*"
+        "images/Honor-Education_2Line_white.png"
       ],
       "matches": [
         "http://*/*",
